@@ -55,3 +55,20 @@
 		]
 	}
 }
+{
+	"head":
+	{
+		"name":"login_struct",
+		"type":"SUBTYPELIST"
+	},
+	"record":
+	{
+		"type":"LOGIN",
+		"elem_no":2,
+		"elemlist":
+		[
+			"LOGIN_INFO=0x01",
+			"RETURN"
+		]
+	}
+}

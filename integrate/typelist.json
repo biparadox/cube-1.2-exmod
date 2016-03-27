@@ -6,13 +6,14 @@
 	},
 	"record":
 	{
-		"elem_no":4,
+		"elem_no":5,
 		"elemlist":
 		[
 			"MESSAGE=0x200",
 			"TUBE",
 			"BLOCK",
-			"ROUTER"
+			"ROUTER",
+			"LOGIN"
 		]
 	}
 }
