@@ -29,6 +29,7 @@ typedef struct proc_ex_module
 
 	void * context;
 	void * context_template;
+	void * pointer;
 	int  (*init)(void *,void *);
 	int  (*start)(void *,void *);
 	int  retval;
@@ -218,22 +219,15 @@ int ex_module_create(char * name,int type,struct struct_elem_attr *  context_des
 	strncpy(ex_module->head.name,name,DIGEST_SIZE*2);
 
 	// init the proc's mutex and the cond
-	if(ret!=0)
-	{
-		kfree(ex_module);
-		return -EINVAL;
-	}
-	if(ret!=0)
-	{
-		kfree(ex_module);
-		return -EINVAL;
-	}
 
-	ex_module->context_template=create_struct_template(context_desc);
-	if(ex_module->context_template==NULL)
+	if(context_desc!=NULL)
 	{
-		kfree(ex_module);
-		return -EINVAL;
+		ex_module->context_template=create_struct_template(context_desc);
+		if(ex_module->context_template==NULL)
+		{
+			kfree(ex_module);
+			return -EINVAL;
+		}
 	}
 
 	*ex_mod=ex_module;		
@@ -269,7 +263,7 @@ int ex_module_setstartfunc(void * ex_mod,void * start)
 	return 0;
 }
 
-void * ex_module_getname(void * ex_mod)
+char * ex_module_getname(void * ex_mod)
 {
 	int ret;
 	EX_MODULE * ex_module;
@@ -278,6 +272,41 @@ void * ex_module_getname(void * ex_mod)
 	ex_module = (EX_MODULE *)ex_mod;
 
 	return &ex_module->head.name;
+}
+
+int ex_module_setname(void * ex_mod,char * name)
+{
+	int ret;
+	EX_MODULE * ex_module;
+	if(ex_mod==NULL)
+		return -EINVAL;
+	ex_module = (EX_MODULE *)ex_mod;
+	strncpy(ex_module->head.name,name,DIGEST_SIZE);
+
+	return &ex_module->head.name;
+}
+
+int ex_module_setpointer(void * ex_mod,void * pointer)
+{
+	int ret;
+	EX_MODULE * ex_module;
+	if(ex_mod==NULL)
+		return -EINVAL;
+	ex_module = (EX_MODULE *)ex_mod;
+	ex_module->pointer=pointer;
+
+	return 0;
+}
+
+void * ex_module_getpointer(void * ex_mod)
+{
+	int ret;
+	EX_MODULE * ex_module;
+	if(ex_mod==NULL)
+		return NULL;
+	ex_module = (EX_MODULE *)ex_mod;
+
+	return ex_module->pointer;
 }
 
 int ex_module_getcontext(void * ex_mod,void ** context)

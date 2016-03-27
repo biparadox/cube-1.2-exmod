@@ -8,7 +8,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include "../../cubelib/include/data_type.h"
+#include "../include/kernel/data_type.h"
 #include "../include/connector.h"
 
 static void

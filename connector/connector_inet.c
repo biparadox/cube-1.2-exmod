@@ -12,9 +12,9 @@
 #include <arpa/inet.h>
 
 #include "../include/kernel_comp.h"
-#include "../../cubelib/include/data_type.h"
-#include "../../cubelib/include/list.h"
-#include "../../cubelib/include/attrlist.h"
+#include "../include/kernel/data_type.h"
+#include "../include/kernel/list.h"
+#include "../include/kernel/attrlist.h"
 #include "../include/connector.h"
 
 #define MAX_CHANNEL_SIZE	1024 
