@@ -162,7 +162,7 @@ int main() {
 		NULL
 	};
 
-  	mem_init(alloc_buffer);
+  	alloc_init(alloc_buffer);
 	struct_deal_init();
 	memdb_init();
 
@@ -175,45 +175,49 @@ int main() {
 	}
 
 	msgfunc_init();
-	routine_init();
+
+
+	struct routine_para routine_para = {&usleep,50*1000};
+
+
+	routine_init(&routine_para);
 
 	routine_register("sub1",ROUTINE_SOURCE,&sub1_ops,NULL);
 	routine_register("sub2",ROUTINE_SOURCE,&sub2_ops,NULL);
+
+	channel=channel_register("test_channel",CHANNEL_RDWR);
 
 	pthread_create(&cube_thread,NULL,routine_start,NULL);
 
 	int * thread_return;
 
-	ret=pthread_join(cube_thread,&thread_return);
 
 	ex_module_list_init();
-	ex_module_create("test",0,NULL,&ex_module);
+//	ex_module_create("test",0,NULL,&ex_module);
 
 
-	ex_module_setinitfunc(ex_module,&test_module_init);
-	ex_module_setstartfunc(ex_module,&test_module_start);
+//	ex_module_setinitfunc(ex_module,&test_module_init);
+//	ex_module_setstartfunc(ex_module,&test_module_start);
+//	test_para.channel=channel;
+//	ex_module_init(ex_module,&test_para);
+//	ex_module_start(ex_module,NULL);
+//	ex_module_join(ex_module,&ret);
 
 	ex_module_create("ws_port",0,NULL,&port_module);
 	ex_module_setinitfunc(port_module,&websocket_port_init);
 	ex_module_setstartfunc(port_module,&websocket_port_start);
 
 
-	channel=channel_create("test_channel",CHANNEL_RDWR);
-	if(channel==NULL)
-		return -EINVAL;
-	test_para.channel=channel;
 	ws_para.channel=channel;
 	ws_para.websocket_addr="0.0.0.0:13888";
 	
 	
-	ex_module_init(ex_module,&test_para);
 	ex_module_init(port_module,&ws_para);
 
-	ex_module_start(ex_module,NULL);
 	usleep(time_val.tv_usec);
 
 	ex_module_start(port_module,NULL);
-	ex_module_join(ex_module,&ret);
+	ret=pthread_join(cube_thread,&thread_return);
 	ex_module_join(port_module,&ret);
 	return ret;
 
