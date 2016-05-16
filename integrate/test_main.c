@@ -185,7 +185,7 @@ int main() {
 	routine_register("sub1",ROUTINE_SOURCE,&sub1_ops,NULL);
 	routine_register("sub2",ROUTINE_SOURCE,&sub2_ops,NULL);
 
-	channel=channel_register("test_channel",CHANNEL_RDWR);
+	channel=channel_register("test_channel",CHANNEL_RDWR|CHANNEL_JSON);
 
 	pthread_create(&cube_thread,NULL,routine_start,NULL);
 
