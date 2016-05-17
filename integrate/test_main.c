@@ -110,7 +110,7 @@ int read_json_file(char * file_name)
 	if(fd<0)
 		return fd;
 
-	readlen=read(fd,json_buffer,1024);
+	readlen=read(fd,json_buffer,4096);
 	if(readlen<0)
 		return -EIO;
 	json_buffer[readlen]=0;
@@ -174,7 +174,12 @@ int main() {
 		printf("read %d elem from file %s!\n",ret,baseconfig[i]);
 	}
 
-	msgfunc_init();
+	ret=msgfunc_init();
+//	if(ret<0)
+//	{
+//		printf("message mechanism init failed!\n");
+///		return ret;
+//	}
 
 
 	struct routine_para routine_para = {&usleep,50*1000};
